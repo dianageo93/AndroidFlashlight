@@ -1,16 +1,20 @@
 package com.example.tilt;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity
 {   
 	private static myCamera cam = new myCamera();
 	private int lightFlag = 0;
+	private final int INTENT_REQUEST = 1;
 	
 	
 	@Override
@@ -18,44 +22,20 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-//
-//        SensorManager sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);        
-//
-//        final SensorEventListener mEventListener = new SensorEventListener() {
-//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//            }
-//
-//            public void onSensorChanged(SensorEvent event) {
-//                switch (event.sensor.getType()) {
-//                	case Sensor.TYPE_ACCELEROMETER:
-//                		Random rnd = new Random(); 
-//                		int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-//                		getWindow().getDecorView().setBackgroundColor(color);
-//                        break;
-//
-//                    case Sensor.TYPE_MAGNETIC_FIELD:
-//                        break;
-//                }
-//            };
-//        };
-//        setListners(sensorManager, mEventListener); 
+//        
         
-        Button mButtton = (Button)findViewById(R.id.buton);
-//		mButtton.setOnTouchListener(new View.OnTouchListener() {
-//			@Override			
-//		    public boolean onTouch(View v, MotionEvent event) {
-//				if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//					cam.flashLightOn(v);
-//				}
-//				if(event.getAction() == MotionEvent.ACTION_UP){
-//					cam.flashLightOff(v);
-//	            }
-//	            return true;
-//		    }
-//		});
+
+        final Context context = this;
+        Button mButton2 = (Button)findViewById(R.id.buton2);
+        mButton2.setOnClickListener(new Button.OnClickListener() {
+		    public void onClick(View v) {
+		        Intent data = new Intent(context,DisplayColors.class) ;
+		        startActivityForResult(data,INTENT_REQUEST);
+		    }
+		});
 		
-        mButtton.setOnClickListener(new View.OnClickListener() {
+        Button mButton = (Button)findViewById(R.id.buton);
+        mButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(lightFlag == 0) {
@@ -72,115 +52,17 @@ public class MainActivity extends Activity
         
     }
 	
-    
-    // Register the event listener and sensor type.
-//    public void setListners(SensorManager sensorManager, SensorEventListener mEventListener)
-//    {
-//        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 
-//                SensorManager.SENSOR_DELAY_NORMAL);
-//        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 
-//                SensorManager.SENSOR_DELAY_NORMAL);
-//    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+	    // See which child activity is calling us back.
+	    switch (requestCode) {
+	        case INTENT_REQUEST:
+	            if (resultCode == Activity.RESULT_OK){
+	                Log.d("MAIN ACTIVITY","am revenit");
+	                Toast.makeText(this, "back to life", Toast.LENGTH_SHORT).show();
+	            } 
+	            break;
+	        default:
+	            break;
+	    }
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package com.example.tilt;
-//
-//import android.hardware.Sensor;
-//import android.hardware.SensorEvent;
-//import android.hardware.SensorEventListener;
-//import android.hardware.SensorManager;
-//import android.os.Bundle;
-//import android.app.Activity;
-//import android.content.Context;
-//import android.view.Menu;
-//import android.widget.TextView;
-//
-//public class MainActivity extends Activity {
-//
-//	private SensorManager mSensorManager;
-//	private Sensor mOrientation;
-//	
-//	@Override
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
-//		mSensorManager = registerListener(mEventListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-//		mOrientation = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-//
-//	}
-//	final SensorEventListener mEventListener = new SensorEventListener() {
-//		
-//		@Override
-//		public void onSensorChanged(SensorEvent event) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//		@Override
-//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//			// TODO Auto-generated method stub
-//			TextView t = (TextView)findViewById(R.id.tv);
-//			double x = (double) (Math.random()*85);
-//			t.setText("" + x);
-//			
-//		}
-//	};
-//
-////	  @Override
-////	  protected void onResume() {
-////	    super.onResume();
-////	    mSensorManager.registerListener(this, mOrientation, SensorManager.SENSOR_DELAY_NORMAL);
-////	  }
-////
-////	  @Override
-////	  protected void onPause() {
-////	    super.onPause();
-////	    mSensorManager.unregisterListener(this);
-////	  }
-//
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-//
-//}
