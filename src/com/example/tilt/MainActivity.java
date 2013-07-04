@@ -1,12 +1,6 @@
 package com.example.tilt;
 
-import java.util.Random;
 import android.app.Activity;
-import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,49 +9,64 @@ import android.widget.Button;
 
 public class MainActivity extends Activity
 {   
-	int color = 0; //black
-	myCamera cam = new myCamera();
+	private static myCamera cam = new myCamera();
+	private int lightFlag = 0;
+	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-
-        SensorManager sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);        
-
-        final SensorEventListener mEventListener = new SensorEventListener() {
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            }
-
-            public void onSensorChanged(SensorEvent event) {
-                switch (event.sensor.getType()) {
-                	case Sensor.TYPE_ACCELEROMETER:
-                		Random rnd = new Random(); 
-                		int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                		getWindow().getDecorView().setBackgroundColor(color);
-                        break;
-
-                    case Sensor.TYPE_MAGNETIC_FIELD:
-                        break;
-                }
-            };
-        };
-        setListners(sensorManager, mEventListener); 
+//        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+//
+//        SensorManager sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);        
+//
+//        final SensorEventListener mEventListener = new SensorEventListener() {
+//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//            }
+//
+//            public void onSensorChanged(SensorEvent event) {
+//                switch (event.sensor.getType()) {
+//                	case Sensor.TYPE_ACCELEROMETER:
+//                		Random rnd = new Random(); 
+//                		int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+//                		getWindow().getDecorView().setBackgroundColor(color);
+//                        break;
+//
+//                    case Sensor.TYPE_MAGNETIC_FIELD:
+//                        break;
+//                }
+//            };
+//        };
+//        setListners(sensorManager, mEventListener); 
         
         Button mButtton = (Button)findViewById(R.id.buton);
-		mButtton.setOnTouchListener(new View.OnTouchListener() {
-			@Override			
-		    public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//		mButtton.setOnTouchListener(new View.OnTouchListener() {
+//			@Override			
+//		    public boolean onTouch(View v, MotionEvent event) {
+//				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//					cam.flashLightOn(v);
+//				}
+//				if(event.getAction() == MotionEvent.ACTION_UP){
+//					cam.flashLightOff(v);
+//	            }
+//	            return true;
+//		    }
+//		});
+		
+        mButtton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(lightFlag == 0) {
 					cam.flashLightOn(v);
+					lightFlag = 1;
 				}
-				if(event.getAction() == MotionEvent.ACTION_UP){
+				else if(lightFlag == 1){
 					cam.flashLightOff(v);
+					lightFlag = 0;
 	            }
-	            return true;
-		    }
+			}
 		});
         
         
@@ -65,13 +74,13 @@ public class MainActivity extends Activity
 	
     
     // Register the event listener and sensor type.
-    public void setListners(SensorManager sensorManager, SensorEventListener mEventListener)
-    {
-        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 
-                SensorManager.SENSOR_DELAY_NORMAL);
-    }
+//    public void setListners(SensorManager sensorManager, SensorEventListener mEventListener)
+//    {
+//        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 
+//                SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(mEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 
+//                SensorManager.SENSOR_DELAY_NORMAL);
+//    }
 }
 
 
